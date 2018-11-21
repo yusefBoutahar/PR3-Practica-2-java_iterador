@@ -12,23 +12,36 @@ import java.util.Arrays;
 
 public class Practica2 {
 
+	/**
+	 * Si queremos mostrar los resultados por consola (ademas del fichero), solo
+	 * hay q descomentar el array vectorConsola[]. Linea 35
+	 * 
+	 * Advertir que al usar ese vector para almacenar todas las combinaciones sin repeticion
+	 * que la suma de sus elementos sea impar, tiene un LIMITE DE MEMORIA, es decir, si hay demasiadas
+	 * combinaciones sobrepasa el limite de memoria y nos sale un;
+	 * Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+        at practica2.Practica2.main(Practica2.java:35)
+        
+	 * @param args
+	 * @throws IOException
+	 */
     public static void main(String[] args) throws IOException {
 
         int size = Integer.parseInt(args[0]);
         int[] arrayComb = new int[size];// combinacion
         int[] valores = vector(args[1]);// todos los elementos
         
-        Iterator prueba = new Iterator(valores.length,size);
-        int[] vectorConsola = new int[Iterator.getNumOfCombinations()*size];// vector q almacenara las combinaciones IMPARES para imprimirlos por consola
+        Iterator iter = new Iterator(valores.length,size);
+        int[] vectorConsola = new int[iter.getNumOfCombinations()*size];// vector que se usara para mostrar por consola las combinaciones
         FileWriter fichero = new FileWriter(args[2]);
         PrintWriter pw = new PrintWriter(fichero);
         int i = 0;
         int suma = 0;
         
         long tiempoInicial =System.nanoTime();// comienza la cuenta
-        while(prueba.hasMore()){// mientras haya mas combinaciones
+        while(iter.hasMore()){// mientras haya mas combinaciones
         	
-        	arrayComb = prueba.getNext();//nos devuelve las posiciones de la siguiente combinacion
+        	arrayComb = iter.getNext();//nos devuelve las posiciones de la siguiente combinacion
         	    	
         	for(int j = 0; j < arrayComb.length; j++) {
         		suma += valores[arrayComb[j]];
@@ -49,13 +62,15 @@ public class Practica2 {
                 pw.println("");
         	}
         }
-        System.out.println("Ha tardado: "+((System.nanoTime()-tiempoInicial)*0.000000001) + " segundos");
+        if(args[3].equals("-t")) {
+        	System.out.println("Ha tardado: "+((System.nanoTime()-tiempoInicial)*0.000000001) + " segundos");
+        }
         pw.close();
 
         
         // mostramos todas las combinaciones IMPARES
         i = 0; // podemos sobreescribirla por que el iterador ya termino
-        if(args.length == 4){
+        if(args[3].equals("-m")){
             for (int j = 0; j < vectorConsola.length; j++,i++) {
             	if(vectorConsola[j] == 0)break;// cuando terminen se para, y no sigue imprimiendo ceros
             	if( i == arrayComb.length) {

@@ -8,7 +8,7 @@ public class Iterator {
 	private int n;
 	private int r;
 	private BigInteger numLeft;
-	private static BigInteger total;
+	private BigInteger total;
 	
 	/**
 	 * CONTRUCTOR
@@ -39,7 +39,7 @@ public class Iterator {
 	 * 
 	 * @return Devuelve el numero maximo de combinaciones posibles
 	 */
-	public static int getNumOfCombinations() {
+	public int getNumOfCombinations() {
 		
 		return Integer.parseInt(total.toString());
 		
